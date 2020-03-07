@@ -6,7 +6,8 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0" name="viewport">
   <title>Bitshares</title>
-  <link href="/app.css?20200302" rel="stylesheet" />
+  <link href="/app.css?20200307" rel="stylesheet" />
+
 </head>
 <body>
   <div id="container">
@@ -50,6 +51,7 @@
             </div>
           </div>
         </div>
+
         <div class="fr field-wrap">
           <div class="clearfix">
             <img data-index="4" data-index="1" id="check-yes-length3to32" class="check-img fl block img-check none" src="images/check-yes.png" />
@@ -82,9 +84,9 @@
         </div>
       </div>
 
-      <div id="submit-wrap">
-        <button id="submit-button">
-          <!-- 立即注册 -->
+      <div id="next-wrap">
+        <button id="next-button">
+          <!-- 下一步 -->
         </button>
       </div>
 
@@ -114,16 +116,33 @@
       <div id="important-tip" class="full-center">
       </div>
 
-      <div id="next-wrap">
-        <button id="next-button">
+      <div class="clearfix" id="submit-wrap" style="margin-top: 3em;">
+        <button class="fl block" id="back-button" style="background-color: #1f2b44;">回上一页</button>
+        <button class="fl block" id="submit-button" style="margin-left: 20px;">
           <!-- 立即注册 -->
         </button>
       </div>
+
+      <div id="agreement-wrap" class="full-center">
+        <table>
+          <tr>
+            <td>
+              <input type="checkbox" id="agreement-checkbox" />
+            </td>
+            <td>
+              <span id="argeement-checkbox-tip-agreement" class="white"></span>
+              <a href="#" id="argeement-checkbox-tip-agreement-link" class="highlight"></a>
+            </td>
+
+          </tr>
+        </table>
+      </div>
+
     </div>
 
     <!-- Footer -->
     <div id="footer">
-      <div class="full-center" style="margin-top: 4em;">
+      <div class="full-center" style="margin-top: 3em;">
         <span id="text-exist-account" class="footer-text white">
           <!-- 已有账号: -->
         </span>
@@ -132,24 +151,31 @@
         </a>
       </div>
 
-      <image id="qrcode" src="images/qrcode.png" class="full-center block" />
-
-      <div class="full-center" style="margin-top: 3em;">
-        <span id="text-website" class="footer-text white">
-          <!-- 官网: -->
-        </span>
-        <a href="http://btspp.io" target="_blank" class="footer-text highlight">btspp.io</a>
-      </div>
-      <div class="full-center" style="margin-top: 3em;">
+      <div id="referrer-wrap" class="full-center" style="margin-top: 3em;">
         <span id="text-referrer" class="footer-text white">
           <!-- 推荐人: -->
         </span>
         <a href="/" target="_blank" class="footer-text highlight">23jdev-1</a>
       </div>
     </div>
+
+    <div id="bottom-footer" class="relative">
+      <div class="full-center" style="margin-top: 12px;">
+        <span id="text-website" class="footer-text normal-color">
+          <!-- 官网: -->
+        </span>
+        <a href="http://btspp.io" target="_blank" class="footer-text normal-color">btspp.io</a>
+      </div>
+      <div class="full-center normal-color footer-text">
+        contact@btsplusplus.com
+      </div>
+      <image class="block absolute" id="qrcode" src="images/qrcode.png" class="full-center block" />
+    </div>
+
+
   </div>
 
-  <script src="/app.js?20200302" type="text/javascript"></script>
+  <script src="/app.js?20200307" type="text/javascript"></script>
 
 </body>
 </html>

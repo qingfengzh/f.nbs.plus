@@ -15,6 +15,8 @@ var I18n = {
   "cn": {
     "title": "欢迎来到比特股去中心化交易平台",
     "tip_input_account": "请输入账号",
+    "tip_argeement": "我同意,",
+    "tip_argeement_link": "服务协议",
 
     "include_en_digit_char": "由英文字母,数字或短横线 \"-\"组成",
     "start_with_char": "必须字母开头",  
@@ -59,6 +61,10 @@ function tranlate(){
   document.getElementById("tip-save-pwd").innerText = i18n["tip_save_pwd"];
   document.getElementById("important-tip").innerHTML = i18n["important_tip"];
   document.getElementById("next-button").innerText = i18n["next_step"];
+  document.getElementById("argeement-checkbox-tip-agreement").innerText = i18n["tip_argeement"];
+  document.getElementById("argeement-checkbox-tip-agreement-link").innerText = i18n["tip_argeement_link"];
+
+
 
 }
 
@@ -68,7 +74,7 @@ function renderPassword(text16Array){
     var div = document.createElement("div");
     div.innerText = text;
     div.style.color = "white";
-    div.style.fontSize = "1em";
+    div.style.fontSize = "16px";
     div.style.fontWeight = "700";
     div.style.float = "left";
     div.style.width = "12.5%";
@@ -100,6 +106,11 @@ function bindEvents(){
   // 下一步
   document.getElementById("next-button").addEventListener('click',function() {
     onNextClickButton();
+  });
+
+  // 回上一页
+  document.getElementById("back-button").addEventListener('click',function() {
+    onBackClickButton();
   });
 
   // 监测账号输入
@@ -172,12 +183,27 @@ function clearAllCheckTextStyleColor(){
   }
 }
 
-// 第一步提交
-function onSubmitButton(){
+// 下一步提交
+function onNextClickButton(){
   var div_step1 = document.getElementById("register-step1")
   var div_step2 = document.getElementById("register-step2")
   div_step1.style.display = "none";
   div_step2.style.display = "block";
+
+  // 下一步二维码和推荐人不显示
+  document.getElementById("qrcode").style.display = "none";
+  document.getElementById("referrer-wrap").style.display = "none";
+}
+
+function onBackClickButton(){
+  var div_step1 = document.getElementById("register-step1")
+  var div_step2 = document.getElementById("register-step2")
+  div_step1.style.display = "block";
+  div_step2.style.display = "none";
+
+  // 下一步二维码和推荐人不显示
+  document.getElementById("qrcode").style.display = "block";
+  document.getElementById("referrer-wrap").style.display = "block";
 }
 
 // 显示高亮包含字母数字-check文字颜色
@@ -236,8 +262,8 @@ function showCheckImgDigitCharTail(){
   document.getElementById("check-no-digit-char-tail").style.display = "none";
 }
 
-// 提交并下一步
-function onNextClickButton(){
+// 立即注册提交
+function onSubmitButton(){
 
 }
 

@@ -12,6 +12,11 @@ body {margin:0; padding: 0;}
 .clearfix:after{
   clear:both;
 }
+
+a {text-decoration: none;}
+
+.relative { position: relative;  }
+.absolute { position: absolute; }
 .fl { float: left; }
 .fr{ float: right; }
 .block { display: block; }
@@ -27,21 +32,34 @@ body {background-color: #151e31;}
 #title {font-size: 2.6em; margin-top: 30px; font-weight: 900;}
 .main-body { margin-top: 8em; }
 #wrap-input-account {margin-bottom: 6em;}
-#tip-input-account {font-size: 2em; color: white;}
-input#input-account{display: block; width: 100%; margin-top: 1em; font-size: 3em; color: white; background: none; border: none; border-bottom: 1px solid white; outline:none;}
+#tip-input-account {font-size: 14px; color: white;}
+input#input-account{
+	display: block; width: 100%; margin-top: 1em; font-size: 3em; color: white; background: none; 
+	border: none; border-radius: 0px; border-bottom: 1px solid white; outline:none;
+}
 .field-text {height: 30px; line-height: 30px; color: white;}
 .field-line-wrap {width: 100%; margin-bottom: 1em;}
 .field-wrap {width: 50%;}
-#submit-wrap,#next-wrap{width: 100%; margin-top: 5em; text-align: center;}
-#submit-button, #next-button { background-color: #5c7ed2; border: none; color: white; padding: 0.7em 2em; font-size: 2em; }
-.white {color: white; }
-.footer-text { font-size: 14px; }
+#submit-wrap{width: 240px; margin: 0 auto; margin-top: 5em; }
+#next-wrap{width: 100%; margin-top: 5em; text-align: center; }
+#submit-button, #next-button, #back-button {
+ background-color: #5c7ed2; border: none; color: white; width: 110px; height: 40px; font-size: 2em; 
+}
 
-#qrcode { width: 30%; text-align: center; margin-left: 35%; margin-top: 3em;}
+.white {color: white; }
+#footer { margin-bottom: 48px; }
+.footer-text { font-size: 14px; }
+#bottom-footer {position: fixed; bottom: 0; left: 0; width: 100%; height: 64px; background-color: #14223a;}
+#agreement-wrap {margin: 0 auto; ;margin-top: 3em; width: 130px; }
+#argeement-checkbox-tip-agreement-link {font-weight: 700;}
+#qrcode { width: 48px; height: 48px; text-align: center; right: 10%; top: 8px;}
 
 .highlight {color: #5c7ed2; }
+.normal-color {color: #c7cce7;}
 #pwd-tip-and-toggle-lang-wrap {width: 80%; margin-left: 10%;}
-#tip-save-pwd {color: white; font-size: 1em;}
-#lang-wrap {color: white; font-size: 1em;}
+#tip-save-pwd {color: white; font-size: 14px;}
+#lang-wrap {color: white; font-size: 14px;}
 #word-password-wrap { width: 80%; margin-left: 6%; border: 1px solid white; margin-top: 3em; padding: 4%;}
-#important-tip { font-size: 1em; color: white; margin-top: 4em; }
+#important-tip { font-size: 14px; color: white; margin-top: 2em;  }
+#agreement-checkbox { line-height: 14px;  }
+#argeement-checkbox-tip { line-height: 14px;  }
