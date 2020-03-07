@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" style="font-size: 6.82667px;">
+<head>
+  <meta charset="utf-8">
+  <link rel="shortcut icon" href="">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0" name="viewport">
+  <title>Bitshares</title>
+  <link href="/app.css?20200302" rel="stylesheet" />
+</head>
+<body>
+  <div id="container">
+    <div id="logo-wrap" class="clearfix">
+      <img class="block fl" id="logo-img"src="images/logo.png" />
+      <div class="fr white" id="logo-text">BitShares</div>
+    </div>
+    <div id="title" class="full-center white">
+    </div>
+
+
+    <!-- step1 -->
+    <div class="main-body none" id="register-step1">
+      
+      <!-- 输入账号 -->
+      <div id="wrap-input-account">
+        <div id="tip-input-account"></div>
+        <input type="text" id="input-account" />
+      </div>
+
+      <!-- 选项 -->
+      <div class="clearfix field-line-wrap">
+        <div class="fl field-wrap" style="width: 100%;">
+          <div class="clearfix">
+            <img data-index="1" id="check-yes-cb-text-include-en-digest-char" class="check-img fl block img-check none" src="images/check-yes.png" />
+            <img data-index="1" id="check-no-cb-text-include-en-digest-char" class="check-img fl block img-no-check" src="images/check-no.png" />
+            <div class="fl field-text" id="cb-text-include-en-digest-char">
+              <!-- 包含字母数字- -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="clearfix field-line-wrap">
+        <div class="fl field-wrap">
+          <div class="clearfix">
+            <img data-index="3" data-index="1" id="check-yes-start-with-char" class="check-img fl block img-check none" src="images/check-yes.png" />
+            <img data-index="3" id="check-no-start-with-char" class="check-img fl block img-no-check" src="images/check-no.png" />
+            <div class="fl field-text" id="cb-text-start-with-char">
+              <!-- 必须字母开头 -->
+            </div>
+          </div>
+        </div>
+        <div class="fr field-wrap">
+          <div class="clearfix">
+            <img data-index="4" data-index="1" id="check-yes-length3to32" class="check-img fl block img-check none" src="images/check-yes.png" />
+            <img data-index="4" id="check-no-length3to32" class="check-img fl block img-no-check" src="images/check-no.png" />
+            <div class="fl field-text" id="cb-text-length3to32">
+              <!-- 长度3-32位 -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="clearfix field-line-wrap">
+        <div class="fl field-wrap">
+          <div class="clearfix">
+            <img data-index="5" id="check-yes-include-digit" class="check-img fl block img-check none" src="images/check-yes.png" />
+            <img data-index="5" id="check-no-include-digit" class="check-img fl block img-no-check" src="images/check-no.png" />
+            <div class="fl field-text" id="cb-text-include-digit">
+              <!-- 包含数字 -->
+            </div>
+          </div>
+        </div>
+        <div class="fr field-wrap">
+          <div class="clearfix">
+            <img data-index="6" data-index="1" id="check-yes-digit-char-tail" class="check-img fl block img-check none" src="images/check-yes.png" />
+            <img data-index="6" id="check-no-digit-char-tail" class="check-img fl block img-no-check" src="images/check-no.png" />
+            <div class="fl field-text" id="cb-text-digit-char-tail">
+              <!-- 数字或字母结尾 -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="submit-wrap">
+        <button id="submit-button">
+          <!-- 立即注册 -->
+        </button>
+      </div>
+
+    </div>
+
+
+
+    <!-- STEP 2-->
+    <div class="main-body none" id="register-step2">
+      <div id="pwd-tip-and-toggle-lang-wrap" class="clearfix">
+        <div class="fl">
+          <div id="tip-save-pwd">
+            <!-- 请妥善保管以下密码 -->
+          </div>
+        </div>
+        <div class="fr" id="lang-wrap">
+          <a id="lang-cn">中/</a>
+          <a id="lang-en">EN</a>
+        </div>
+      </div>
+
+      <!-- 密码 -->
+      <div id="word-password-wrap" class="clearfix">
+      </div>
+
+      <!-- 重要提示 -->
+      <div id="important-tip" class="full-center">
+      </div>
+
+      <div id="next-wrap">
+        <button id="next-button">
+          <!-- 立即注册 -->
+        </button>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer">
+      <div class="full-center" style="margin-top: 4em;">
+        <span id="text-exist-account" class="footer-text white">
+          <!-- 已有账号: -->
+        </span>
+        <a id="link-download" href="http://download.btspp.io" class="footer-text highlight">
+          <!-- 立即下载 -->
+        </a>
+      </div>
+
+      <image id="qrcode" src="images/qrcode.png" class="full-center block" />
+
+      <div class="full-center" style="margin-top: 3em;">
+        <span id="text-website" class="footer-text white">
+          <!-- 官网: -->
+        </span>
+        <a href="http://btspp.io" target="_blank" class="footer-text highlight">btspp.io</a>
+      </div>
+      <div class="full-center" style="margin-top: 3em;">
+        <span id="text-referrer" class="footer-text white">
+          <!-- 推荐人: -->
+        </span>
+        <a href="/" target="_blank" class="footer-text highlight">23jdev-1</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="/app.js?20200302" type="text/javascript"></script>
+
+</body>
+</html>
