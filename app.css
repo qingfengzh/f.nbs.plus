@@ -63,3 +63,5 @@ input#input-account{
 #important-tip { font-size: 14px; color: white; margin-top: 2em;  }
 #agreement-checkbox { line-height: 14px;  }
 #argeement-checkbox-tip { line-height: 14px;  }
+#argeement-checkbox-tip-agreement {font-size: 14px;}
+#argeement-checkbox-tip-agreement-link {font-size: 14px;}

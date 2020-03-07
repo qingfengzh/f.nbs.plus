@@ -31,8 +31,8 @@ var I18n = {
     "referrer": "推荐人",
     "tip_save_pwd": "请妥善保管以下密码",
     "important_tip": "重要提示: 请勿<span class='highlight'>复制</span>/<span class='highlight'>拍照</span>/<span class='highlight'>截屏</span>,使用纸笔按顺序抄录保存,请妥善保管您的密码信息,丢失<span class='highlight'>无法找回</span>",
-    "next_step": "下一步"
-
+    "next_step": "下一步",
+    "back_button": "回上一页"
   }
 }
 
@@ -63,6 +63,7 @@ function tranlate(){
   document.getElementById("next-button").innerText = i18n["next_step"];
   document.getElementById("argeement-checkbox-tip-agreement").innerText = i18n["tip_argeement"];
   document.getElementById("argeement-checkbox-tip-agreement-link").innerText = i18n["tip_argeement_link"];
+  document.getElementById("back-button").innerText = i18n["back_button"];
 
 
 
