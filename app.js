@@ -127,6 +127,9 @@ function renderPassword(array_password){
   var wrap_div = document.getElementById("word-password-wrap");
   wrap_div.innerHTML = "";
 
+
+
+
   array_password.forEach(function(text){
     var div = document.createElement("div");
     div.innerText = text;
@@ -134,7 +137,13 @@ function renderPassword(array_password){
     div.style.fontSize = "16px";
     div.style.fontWeight = "700";
     div.style.float = "left";
-    div.style.width = "12.5%";
+    
+    if (_current_password_lang === "cn"){
+      div.style.width = "12.5%";
+    } else {
+      div.style.width = "25%";
+    }
+    
     div.style.textAlign = "center";
     div.style.paddingTop = "3.25%";
     div.style.paddingBottom = "3.25%";
@@ -466,7 +475,7 @@ function generatePasswordForCn(){
 
 // 生成英文密码
 function generatePasswordForEn(){
-  _password["en"] = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","1","2","3","4","5","6"];
+  _password["en"] = ["abcd","efgh","ijkl","mnop","qrst","uvwx","yz12","3456"];
 }
 
 // 生成密码
