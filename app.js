@@ -158,13 +158,21 @@ function renderStyle(){
   disableNextButtonStyle();
   disableSubmitButtonStyle();
 
+  var link_agreement = document.getElementById("argeement-checkbox-tip-agreement-link");
+
   if (isLangCN()) {
     renderPassword(_password["cn"]);
-    
+
+    // 用户协议中文版
+    link_agreement.href = "http://btspp.io/zh-cn/agreement.html";
+
   } else {
     renderPassword(_password["en"]);
     // 以下是英文界面的样式修复
     document.getElementById("agreement-wrap").style.width = "240px";  // 同意tip文字在英文下样式超宽
+
+    // 用户协议英文版
+    link_agreement.href = "http://btspp.io/en/agreement.html";
   }
 
   // 中英文
@@ -199,6 +207,11 @@ function bindEvents(){
   // 回上一页
   document.getElementById("back-button").addEventListener('click',function() {
     onBackClickButton();
+  });
+
+  // checkbox 同意事件
+  document.getElementById("agreement-checkbox").addEventListener('click',function() {
+    onBackCheckAgreeChecked();
   });
 
   // 监测账号输入
@@ -314,6 +327,16 @@ function onBackClickButton(){
   // 下一步二维码和推荐人不显示
   document.getElementById("qrcode").style.display = "block";
   document.getElementById("referrer-wrap").style.display = "block";
+}
+
+// 同意注册协议事件
+function onBackCheckAgreeChecked(){
+  var check_agree = document.getElementById("agreement-checkbox");
+  if (check_agree.checked){
+    enableSubmitButtonStyle();
+  } else {
+    disableSubmitButtonStyle();
+  }
 }
 
 // 无效化 下一步按钮样式
