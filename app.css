@@ -70,4 +70,5 @@ input#input-account{
 #top-block-view {display: none;}
 #top-block-view-mask{ position: fixed; z-index: 18000; top: 0; left: 0; width: 100%; height: 100%; background-color: black; opacity: .75; }
 #top-block-view-content { position: fixed; z-index: 18001; top: 50%; width: 100%; height: 80px; text-align: center; }
-#top-block-view-tips { color: white; }
+#top-block-view-tips { color: white; font-size: 14px; }
+#top-block-view-loading img { width: 32px; height: 32px; }
