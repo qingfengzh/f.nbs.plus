@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0" name="viewport">
   <title>Bitshares</title>
-  <link href="/app.css?20200307_1" rel="stylesheet" />
+  <link href="/app.css?20200309_1" rel="stylesheet" />
 
 </head>
 <body>
@@ -126,10 +126,10 @@
       <div id="agreement-wrap" class="full-center">
         <table>
           <tr>
-            <td>
+            <td valign="middle" style="vertical-align:middle">
               <input type="checkbox" id="agreement-checkbox" />
             </td>
-            <td>
+            <td valign="middle" style="vertical-align:middle">
               <span id="argeement-checkbox-tip-agreement" class="white"></span>
               <a href="#" id="argeement-checkbox-tip-agreement-link" class="highlight"></a>
             </td>
@@ -146,7 +146,7 @@
         <span id="text-exist-account" class="footer-text white">
           <!-- 已有账号: -->
         </span>
-        <a id="link-download" href="http://download.btspp.io" class="footer-text highlight">
+        <a id="link-download" target="_blank" href="https://app.btspp.io" class="footer-text highlight">
           <!-- 立即下载 -->
         </a>
       </div>
@@ -155,7 +155,7 @@
         <span id="text-referrer" class="footer-text white">
           <!-- 推荐人: -->
         </span>
-        <a href="/" target="_blank" class="footer-text highlight">23jdev-1</a>
+        <a href="/" id="referrer" target="_blank" class="footer-text highlight">23jdev-1</a>
       </div>
     </div>
 
@@ -175,7 +175,20 @@
 
   </div>
 
-  <script src="/app.js?20200307_1" type="text/javascript"></script>
+  <div id="top-block-view">
+    <div id="top-block-view-mask">
+    </div>
+    <div id="top-block-view-content">
+      <div id="top-block-view-loading">
+        <img src="images/loading.gif" />
+      </div>
+      <div id="top-block-view-tips" class="mt10">
+        请求中...
+      </div>
+    </div>
+  </div>
+
+  <script src="/app.js?20200309_1" type="text/javascript"></script>
 
 </body>
 </html>

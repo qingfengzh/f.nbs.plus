@@ -1,14 +1,23 @@
 var WINDOW_WIDTH = window.innerWidth;
 var WINDOW_HEIGHT = window.innerHEIGHT;
-var DEFAULT_LANG = "cn";
-var _current_lang = DEFAULT_LANG;
+var _current_lang = null;
+var _current_password_lang = null;
+var _check_account = false; 
+var _check_agree = false; 
 
-var _password = null;
+// 需创建的密码数据
+var _password = {
+  "cn":  [],
+  "en": []
+};
 
 // 提交的数据初始化
 var submit_data = {
   "account" : null,
-  "password" : null
+  "public_key1" : null,
+  "public_key2" : null,
+  "public_key3" : null,
+  "referrer": null
 }
 
 var I18n = {
@@ -32,8 +41,52 @@ var I18n = {
     "tip_save_pwd": "请妥善保管以下密码",
     "important_tip": "重要提示: 请勿<span class='highlight'>复制</span>/<span class='highlight'>拍照</span>/<span class='highlight'>截屏</span>,使用纸笔按顺序抄录保存,请妥善保管您的密码信息,丢失<span class='highlight'>无法找回</span>",
     "next_step": "下一步",
-    "back_button": "回上一页"
+    "back_button": "回上一页",
+
+    "request": "请求中..."
+  },
+  "en": {
+    "title": "Welcome to BitShares",
+    "tip_input_account": "please enter account",
+    "tip_argeement": "I agree,",
+    "tip_argeement_link": "the service agreement",
+
+    "include_en_digit_char": "Composed of english letter, number, or \"-\"",
+    "start_with_char": "start with letter",  
+    "length3to32": "Length 3-12 bits",
+    "include_digit": "contain number",
+    "digit_char_tail": "Numbe, letter end",
+
+    "register_immediately": "Register",
+    "exist_account": "have an account?",
+    "download_immediately": "Log in here",
+    "website": "Web:",
+    "referrer": "referrer",
+    "tip_save_pwd": "Please keep the following passwords in a safe place.",
+    "important_tip": "Important note：Do not <span class='highlight'>copy</span> / <span class='highlight'>photograph</span> / <span class='highlight'>screenshot</span>, use pen and paper to record in order.",
+    "next_step": "Next",
+    "back_button": "Back",
+
+    "request": "Requesting..."
   }
+}
+
+function getUrlParam(name) {
+  const reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+  const r = window.location.search.substr(1).match(reg);
+  if (r != null)
+    return unescape(r[2]);
+  return null;
+}
+
+// 显示 block view
+function showBlockView(){
+  document.getElementById("top-block-view").style.display = "block";
+}
+
+// 隐藏 block view
+function hideBlockView(){
+  document.getElementById("top-block-view").style.display = "none";
 }
 
 function isLangCN(){
@@ -65,13 +118,16 @@ function tranlate(){
   document.getElementById("argeement-checkbox-tip-agreement-link").innerText = i18n["tip_argeement_link"];
   document.getElementById("back-button").innerText = i18n["back_button"];
 
-
+  document.getElementById("top-block-view-tips").innerText = i18n["request"];
 
 }
 
-function renderPassword(text16Array){
-  var wrap_div = document.getElementById("word-password-wrap")
-  text16Array.forEach(function(text){
+// 渲染界面 - 密码
+function renderPassword(array_password){
+  var wrap_div = document.getElementById("word-password-wrap");
+  wrap_div.innerHTML = "";
+
+  array_password.forEach(function(text){
     var div = document.createElement("div");
     div.innerText = text;
     div.style.color = "white";
@@ -84,24 +140,55 @@ function renderPassword(text16Array){
     div.style.paddingBottom = "3.25%";
 
     wrap_div.appendChild(div);
-
   });
 }
 
+function renderReferrer(name){
+  document.getElementById("referrer").innerText = name;
+}
+
 function renderStyle(){
+  // 渲染推荐人
+  renderReferrer(submit_data["referrer"] || "");
+
+  // 显示第一步的界面
   document.getElementById("register-step1").style.display = "block";
-  // document.getElementById("input-account").style.width = (WINDOW_WIDTH - 
-  //   WINDOW_WIDTH * 0.2 - document.getElementById("tip-input-account").offsetWidth - 15) + "px" ;
 
-  document.getElementById(isLangCN() ? "lang-cn" : "lang-en").style.color = "#5c7ed2";
-  renderPassword(_password);
+  // 无效化下一步和提交按钮样式
+  disableNextButtonStyle();
+  disableSubmitButtonStyle();
 
+  if (isLangCN()) {
+    renderPassword(_password["cn"]);
+    
+  } else {
+    renderPassword(_password["en"]);
+    // 以下是英文界面的样式修复
+    document.getElementById("agreement-wrap").style.width = "240px";  // 同意tip文字在英文下样式超宽
+  }
+
+  // 中英文
+  if (_current_password_lang === "cn"){
+    document.getElementById("lang-cn").style.color = "white";
+    document.getElementById("lang-en").style.color = "#5c7ed2";
+  } else {
+    document.getElementById("lang-cn").style.color = "#5c7ed2";
+    document.getElementById("lang-en").style.color = "white";
+  }
 }
 
 function bindEvents(){
   // 立即注册按钮
   document.getElementById("submit-button").addEventListener('click',function() {
     onSubmitButton();
+  });
+
+  // 中英文密码切换按钮
+  document.getElementById("lang-cn").addEventListener('click',function() {
+    onLangCnClickButton();
+  });
+  document.getElementById("lang-en").addEventListener('click',function() {
+    onLangEnClickButton();
   });
 
   // 下一步
@@ -121,16 +208,24 @@ function bindEvents(){
   });
 }
 
+
+
 function onAccountChange(target){
   var value = target.value;
 
   clearAllCheckImg()
   clearAllCheckTextStyleColor();
 
+  // 初始化检查步骤 和 下一步按钮灰色
+  var check_finishs = 0;
+  _check_account = false;
+  disableNextButtonStyle();
+
   // 检测包含字母数字-
   if (/^[a-zA-Z0-9-]+$/.test(value)){
     showCheckImgIncEnDigestChar();
     showHighLightCheckIncEnDigestCharText();
+    check_finishs++;
   }
 
   // 检测字母开头
@@ -138,18 +233,21 @@ function onAccountChange(target){
   if (/^[a-zA-Z]$/.test(first_char)){
     showCheckImgStartWithChar();
     showHighLightCheckStartWithCharText();
+    check_finishs++;
   }
 
   // 检测3-32位
   if (value.length >= 3 && value.length <= 32){
     showCheckImgLength3to32();
     showHighLightCheckLength3to32Text();
+    check_finishs++;
   }
 
   // 检测包含数字
   if ((/[0-9]+/ig).test(value)){
     showCheckImgIncludeDigit();
     showHighLightCheckIncludeDigitText();
+    check_finishs++;
   }
 
   // 数字或字母结尾
@@ -157,8 +255,14 @@ function onAccountChange(target){
   if (/^[a-zA-Z0-9]$/.test(last_char)){
     showCheckImgDigitCharTail();
     showHighLightCheckDigitCharTailText();
+    check_finishs++;
   }
 
+  // 5步检测全部通过 -> 点亮下一步按钮
+  if (check_finishs === 5) {
+    _check_account = true;
+    enableNextButtonStyle();
+  }
 }
 
 // 显示所有未 check 的图片
@@ -186,6 +290,11 @@ function clearAllCheckTextStyleColor(){
 
 // 下一步提交
 function onNextClickButton(){
+
+  if (!_check_account){
+    return;
+  }
+
   var div_step1 = document.getElementById("register-step1")
   var div_step2 = document.getElementById("register-step2")
   div_step1.style.display = "none";
@@ -205,6 +314,26 @@ function onBackClickButton(){
   // 下一步二维码和推荐人不显示
   document.getElementById("qrcode").style.display = "block";
   document.getElementById("referrer-wrap").style.display = "block";
+}
+
+// 无效化 下一步按钮样式
+function disableNextButtonStyle(){
+  document.getElementById("next-button").style.backgroundColor = "#474a54";
+}
+
+// 有效化 下一步按钮样式
+function enableNextButtonStyle(){
+  document.getElementById("next-button").style.backgroundColor = "#5c7ed2";
+}
+
+// 无效化 提交按钮样式
+function disableSubmitButtonStyle(){
+  document.getElementById("submit-button").style.backgroundColor = "#474a54";
+}
+
+// 有效化 提交按钮样式
+function enableSubmitButtonStyle(){
+  document.getElementById("submit-button").style.backgroundColor = "#5c7ed2";
 }
 
 // 显示高亮包含字母数字-check文字颜色
@@ -263,20 +392,95 @@ function showCheckImgDigitCharTail(){
   document.getElementById("check-no-digit-char-tail").style.display = "none";
 }
 
+// 中文密码切换点击
+function onLangCnClickButton(){
+  if (_current_password_lang === "cn") return;
+  _current_password_lang = "cn";
+  document.getElementById("lang-cn").style.color = "white";
+  document.getElementById("lang-en").style.color = "#5c7ed2";
+  renderPassword(_password["cn"]);
+}
+
+// 英文密码切换点击
+function onLangEnClickButton(){
+  if (_current_password_lang === "en") return;
+  _current_password_lang = "en";
+  document.getElementById("lang-cn").style.color = "#5c7ed2";
+  document.getElementById("lang-en").style.color = "white";
+  renderPassword(_password["en"]);
+}
+
+// 请求注册接口
+function requestRegisterApi(callback){
+
+  // Todo: 请求注册接口
+
+  callback();
+}
+
 // 立即注册提交
 function onSubmitButton(){
+  var check_agree = document.getElementById("agreement-checkbox");
+  if (!check_agree.checked){
+    return;
+  }
 
+  // 提交前遮罩
+  showBlockView();
+
+  // Todo 提交请求逻辑
+  requestRegisterApi(function(){
+
+    // 隐藏遮罩
+    // hideBlockView();
+  });
+}
+
+// 生成中文密码
+function generatePasswordForCn(){
+  _password["cn"] = ["勤","网","股","速","提","充","楼","范","腰","就","定","浓","位","淋","塞","布"];
+}
+
+// 生成英文密码
+function generatePasswordForEn(){
+  _password["en"] = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","1","2","3","4","5","6"];
 }
 
 // 生成密码
 function generatePassword(){
-  _password = ["勤","网","股","速","提","充","楼","范","腰","就","定","浓","位","淋","塞","布"];
+  generatePasswordForCn();
+  generatePasswordForEn();
 }
 
-function main(){
+// 初始化数据
+function initializeData(){
+
+  // 设定语言
+  _current_lang = "en";
+  _current_password_lang = "en";
+
+  // 生成随机密码
   generatePassword();
+
+  // 获取浏览器参数
+  submit_data["referrer"] = getUrlParam("r");
+
+  // Todo: 其他数据
+}
+
+// 主函数
+function main(){
+  
+  // 1 初始化数据
+  initializeData();
+
+  // 2. 翻译界面
   tranlate();
+
+  // 3. 渲染样式
   renderStyle();
+
+  // 4. 绑定事件
   bindEvents();
 }
 
