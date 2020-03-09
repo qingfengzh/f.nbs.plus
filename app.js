@@ -2,8 +2,10 @@ var WINDOW_WIDTH = window.innerWidth;
 var WINDOW_HEIGHT = window.innerHEIGHT;
 var _current_lang = null;
 var _current_password_lang = null;
+var _referrer = null;
 var _check_account = false; 
 var _check_agree = false; 
+var WS_API = "wss://api.weaccount.cn";
 
 // 需创建的密码数据
 var _password = {
@@ -12,12 +14,13 @@ var _password = {
 };
 
 // 提交的数据初始化
-var submit_data = {
-  "account" : null,
-  "public_key1" : null,
-  "public_key2" : null,
-  "public_key3" : null,
-  "referrer": null
+var _submit_data = {
+  "account_name" : null,
+  "owner_key" : null,
+  "active_key" : null,
+  "memo_key" : null,
+  "chid": 20,
+  "referrer_code": null
 }
 
 var I18n = {
@@ -127,9 +130,6 @@ function renderPassword(array_password){
   var wrap_div = document.getElementById("word-password-wrap");
   wrap_div.innerHTML = "";
 
-
-
-
   array_password.forEach(function(text){
     var div = document.createElement("div");
     div.innerText = text;
@@ -158,7 +158,7 @@ function renderReferrer(name){
 
 function renderStyle(){
   // 渲染推荐人
-  renderReferrer(submit_data["referrer"] || "");
+  renderReferrer(_referrer || "");
 
   // 显示第一步的界面
   document.getElementById("register-step1").style.display = "block";
@@ -283,6 +283,7 @@ function onAccountChange(target){
   // 5步检测全部通过 -> 点亮下一步按钮
   if (check_finishs === 5) {
     _check_account = true;
+    _submit_data["account_name"] = value;
     enableNextButtonStyle();
   }
 }
@@ -312,19 +313,31 @@ function clearAllCheckTextStyleColor(){
 
 // 下一步提交
 function onNextClickButton(){
-
   if (!_check_account){
     return;
   }
 
-  var div_step1 = document.getElementById("register-step1")
-  var div_step2 = document.getElementById("register-step2")
-  div_step1.style.display = "none";
-  div_step2.style.display = "block";
+  // 请求查找账号是否存在
+  var account_name = document.getElementById("input-account").value;
+  showBlockView();
+  bitsharesQueryAccount(account_name,function(res){
+    hideBlockView();
+    console.log(res)
+    if (res){
+      alert("账号: "+ account_name + " 链上已存在!");
+      return;
+    }
 
-  // 下一步二维码和推荐人不显示
-  document.getElementById("qrcode").style.display = "none";
-  document.getElementById("referrer-wrap").style.display = "none";
+    var div_step1 = document.getElementById("register-step1")
+    var div_step2 = document.getElementById("register-step2")
+    div_step1.style.display = "none";
+    div_step2.style.display = "block";
+
+    // 下一步二维码和推荐人不显示
+    document.getElementById("qrcode").style.display = "none";
+    document.getElementById("referrer-wrap").style.display = "none";
+
+  });
 }
 
 function onBackClickButton(){
@@ -442,12 +455,27 @@ function onLangEnClickButton(){
   renderPassword(_password["en"]);
 }
 
+// 注册接口完成
+function onRequestRegisterApiFinished(resp){
+  // 隐藏遮罩
+  hideBlockView();
+
+  // Todo 完成后逻辑
+  alert("success!");
+}
+
 // 请求注册接口
 function requestRegisterApi(callback){
 
-  // Todo: 请求注册接口
+  // 创建提交用的公/私钥对
+  generateSubmitKeyPairs();
 
-  callback();
+  // Todo: 请求注册接口
+  // $.post("http://faucet.ofree.vip/v1/chain/vv_register",_submit_data,function(resp){
+  //   callback(resp);
+  // })
+
+  callback()
 }
 
 // 立即注册提交
@@ -460,12 +488,61 @@ function onSubmitButton(){
   // 提交前遮罩
   showBlockView();
 
-  // Todo 提交请求逻辑
-  requestRegisterApi(function(){
+  // 查找推荐人id
+  if (_referrer){
+    bitsharesQueryAccount(_referrer,function(res){
 
-    // 隐藏遮罩
-    // hideBlockView();
-  });
+      // 查找到推荐人 则放到提交数据中
+      if (res.id){
+        _submit_data["referrer_code"] = res.id;
+      }
+
+      // 提交请求逻辑
+      requestRegisterApi(onRequestRegisterApiFinished);
+    });
+  } else {
+      // 提交请求逻辑
+      requestRegisterApi(onRequestRegisterApiFinished);
+  }
+}
+
+// 执行 bts api
+function bitsharesExecApi(api_name,params, callback){
+  window.apis.instance().db_api().exec(api_name,params).then(function(res){
+    callback(res);
+  }).catch(function(err){
+    alert("[Request exception] \n code: " + err.code + ",\n message: " + err.data.message);
+  })
+}
+
+// 查询账号
+function bitsharesQueryAccount(account, callback){
+  if(typeof(window.bitshares_js) === "object"){
+    if (!window.apis){
+      window.apis = window.bitshares_js.bitshares_ws.Apis
+      window.apis.instance(WS_API, true).init_promise.then(function(res){
+        bitsharesExecApi("get_account_by_name",[account],callback);
+      }).catch(function(err){
+        alert("[Connect api node failed] \n code: " + err.code + ",\n message: " + err.data.message);
+      })
+    } else {
+      bitsharesExecApi("get_account_by_name",[account],callback);
+    }
+  }
+}
+
+// 创建公/私钥
+function createKeyPair(){
+  return "xxxxxxxxxxxx";
+}
+
+// 创建注册用的公/私钥对
+function generateSubmitKeyPairs(){
+
+   // Todo 创建逻辑未完成
+  _submit_data["owner_key"] = createKeyPair();
+  _submit_data["active_key"] = createKeyPair();
+  _submit_data["memo_key"] = createKeyPair();
 }
 
 // 生成中文密码
@@ -495,9 +572,8 @@ function initializeData(){
   generatePassword();
 
   // 获取浏览器参数
-  submit_data["referrer"] = getUrlParam("r");
+  _referrer = getUrlParam("r");
 
-  // Todo: 其他数据
 }
 
 // 主函数
