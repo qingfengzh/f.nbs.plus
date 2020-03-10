@@ -9,7 +9,7 @@ var WS_API = "wss://api.weaccount.cn";
 
 // 需创建的密码数据
 var _password = {
-  "cn":  [],
+  "zh":  [],
   "en": []
 };
 
@@ -23,8 +23,23 @@ var _submit_data = {
   "referrer_code": null
 }
 
+// 注册接口返回STATUS枚举
+API_REGISTER_RETURN_STATUS_MSG = {
+  "0": "正常",
+  "10": "无效参数",
+  "20": "高级名称不支持",
+  "30": "账号已经存在",
+  "40": "区块链上注册失败（错误信息查看日志）",
+  "41": "单IP达到最大注册数量",
+  "42": "单IP冷却时间未到（注册太过频繁）",
+  "51": "商家主不存在",
+  "52": "商家备不存在",
+  "999": "服务器维护中"
+}
+
+
 var I18n = {
-  "cn": {
+  "zh": {
     "title": "欢迎来到比特股去中心化交易平台",
     "tip_input_account": "请输入账号",
     "tip_argeement": "我同意,",
@@ -92,8 +107,8 @@ function hideBlockView(){
   document.getElementById("top-block-view").style.display = "none";
 }
 
-function isLangCN(){
-  return _current_lang === "cn";
+function isLangZh(){
+  return _current_lang === "zh";
 }
 
 function tranlate(){
@@ -138,7 +153,7 @@ function renderPassword(array_password){
     div.style.fontWeight = "700";
     div.style.float = "left";
     
-    if (_current_password_lang === "cn"){
+    if (_current_password_lang === "zh"){
       div.style.width = "12.5%";
     } else {
       div.style.width = "25%";
@@ -169,8 +184,8 @@ function renderStyle(){
 
   var link_agreement = document.getElementById("argeement-checkbox-tip-agreement-link");
 
-  if (isLangCN()) {
-    renderPassword(_password["cn"]);
+  if (isLangZh()) {
+    renderPassword(_password["zh"]);
 
     // 用户协议中文版
     link_agreement.href = "http://btspp.io/zh-cn/agreement.html";
@@ -185,7 +200,7 @@ function renderStyle(){
   }
 
   // 中英文
-  if (_current_password_lang === "cn"){
+  if (_current_password_lang === "zh"){
     document.getElementById("lang-cn").style.color = "white";
     document.getElementById("lang-en").style.color = "#5c7ed2";
   } else {
@@ -202,7 +217,7 @@ function bindEvents(){
 
   // 中英文密码切换按钮
   document.getElementById("lang-cn").addEventListener('click',function() {
-    onLangCnClickButton();
+    onLangZhClickButton();
   });
   document.getElementById("lang-en").addEventListener('click',function() {
     onLangEnClickButton();
@@ -324,7 +339,7 @@ function onNextClickButton(){
     hideBlockView();
     console.log(res)
     if (res){
-      alert("账号: "+ account_name + " 链上已存在!");
+      alert("Account: "+ account_name + " exist.");
       return;
     }
 
@@ -438,12 +453,12 @@ function showCheckImgDigitCharTail(){
 }
 
 // 中文密码切换点击
-function onLangCnClickButton(){
-  if (_current_password_lang === "cn") return;
-  _current_password_lang = "cn";
+function onLangZhClickButton(){
+  if (_current_password_lang === "zh") return;
+  _current_password_lang = "zh";
   document.getElementById("lang-cn").style.color = "white";
   document.getElementById("lang-en").style.color = "#5c7ed2";
-  renderPassword(_password["cn"]);
+  renderPassword(_password["zh"]);
 }
 
 // 英文密码切换点击
@@ -460,7 +475,17 @@ function onRequestRegisterApiFinished(resp){
   // 隐藏遮罩
   hideBlockView();
 
-  // Todo 完成后逻辑
+  console.log(resp);
+
+  // Todo 注册接口返回数据处理
+  // if (resp["status"] !== 0 && resp["msg"] !== "ok"){
+  //   var error_msg = API_REGISTER_RETURN_STATUS_MSG[resp["status"].toString()];
+  //   alert(error_msg);
+  // } else {
+  //   // Todo 完成后逻辑
+  //   alert("success!");
+  // }
+
   alert("success!");
 }
 
@@ -511,6 +536,7 @@ function bitsharesExecApi(api_name,params, callback){
   window.apis.instance().db_api().exec(api_name,params).then(function(res){
     callback(res);
   }).catch(function(err){
+    console.log(err)
     alert("[Request exception] \n code: " + err.code + ",\n message: " + err.data.message);
   })
 }
@@ -546,8 +572,8 @@ function generateSubmitKeyPairs(){
 }
 
 // 生成中文密码
-function generatePasswordForCn(){
-  _password["cn"] = ["勤","网","股","速","提","充","楼","范","腰","就","定","浓","位","淋","塞","布"];
+function generatePasswordForZh(){
+  _password["zh"] = ["勤","网","股","速","提","充","楼","范","腰","就","定","浓","位","淋","塞","布"];
 }
 
 // 生成英文密码
@@ -557,7 +583,7 @@ function generatePasswordForEn(){
 
 // 生成密码
 function generatePassword(){
-  generatePasswordForCn();
+  generatePasswordForZh();
   generatePasswordForEn();
 }
 
@@ -565,15 +591,14 @@ function generatePassword(){
 function initializeData(){
 
   // 设定语言
-  _current_lang = "en";
-  _current_password_lang = "en";
-
-  // 生成随机密码
-  generatePassword();
+  _current_lang = getUrlParam("lang") || "zh";
+  _current_password_lang = _current_lang;
 
   // 获取浏览器参数
   _referrer = getUrlParam("r");
 
+  // 生成随机密码
+  generatePassword();
 }
 
 // 主函数
