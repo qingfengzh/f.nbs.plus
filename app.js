@@ -167,13 +167,19 @@ function renderPassword(array_password){
   });
 }
 
-function renderReferrer(name){
-  document.getElementById("referrer").innerText = name;
+function renderReferrer(){
+  var name = _referrer || "";
+  if (name && name.length > 0) {
+    document.getElementById("referrer-wrap").style.display = "block";
+    document.getElementById("referrer").innerText = name;
+  } else {
+    document.getElementById("referrer-wrap").style.display = "none";
+  }
 }
 
 function renderStyle(){
   // 渲染推荐人
-  renderReferrer(_referrer || "");
+  renderReferrer();
 
   // 显示第一步的界面
   document.getElementById("register-step1").style.display = "block";
@@ -351,7 +357,6 @@ function onNextClickButton(){
     // 下一步二维码和推荐人不显示
     document.getElementById("qrcode").style.display = "none";
     document.getElementById("referrer-wrap").style.display = "none";
-
   });
 }
 
@@ -361,9 +366,9 @@ function onBackClickButton(){
   div_step1.style.display = "block";
   div_step2.style.display = "none";
 
-  // 下一步二维码和推荐人不显示
+  // 返回时二维码和推荐人恢复显示
   document.getElementById("qrcode").style.display = "block";
-  document.getElementById("referrer-wrap").style.display = "block";
+  renderReferrer();
 }
 
 // 同意注册协议事件
