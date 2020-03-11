@@ -188,7 +188,7 @@ function renderStyle(){
     renderPassword(_password["zh"]);
 
     // 用户协议中文版
-    link_agreement.href = "http://btspp.io/zh-cn/agreement.html";
+    link_agreement.href = "https://btspp.io/zh-cn/agreement.html";
 
   } else {
     renderPassword(_password["en"]);
@@ -196,7 +196,7 @@ function renderStyle(){
     document.getElementById("agreement-wrap").style.width = "240px";  // 同意tip文字在英文下样式超宽
 
     // 用户协议英文版
-    link_agreement.href = "http://btspp.io/en/agreement.html";
+    link_agreement.href = "https://btspp.io/en/agreement.html";
   }
 
   // 中英文
