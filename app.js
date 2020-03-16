@@ -71,11 +71,11 @@ var _submit_data = {
   "owner_key" : null,
   "active_key" : null,
   "memo_key" : null,
-  "chid": 20,
+  "chid": 50,
   "referrer_code": null
 }
 
-// 注册接口返回STATUS枚举
+// 注册接口返回STATUS枚举 TODO 多语言
 API_REGISTER_RETURN_STATUS_MSG = {
   "0": "正常",
   "10": "无效参数",
@@ -335,7 +335,7 @@ function bindEvents(){
 
 
 function onAccountChange(target){
-  var value = target.value;
+  var value = target.value.toLowerCase();
 
   clearAllCheckImg()
   clearAllCheckTextStyleColor();
@@ -426,6 +426,7 @@ function onNextClickButton(){
     hideBlockView();
     console.log(res)
     if (res){
+      //  TODO: 多语言 账号 xxx 已经存在。
       alert("Account: "+ account_name + " exist.");
       return;
     }
@@ -565,30 +566,28 @@ function onRequestRegisterApiFinished(resp){
 
   console.log(resp);
 
-  // Todo 注册接口返回数据处理
-  // if (resp["status"] !== 0 && resp["msg"] !== "ok"){
-  //   var error_msg = API_REGISTER_RETURN_STATUS_MSG[resp["status"].toString()];
-  //   alert(error_msg);
-  // } else {
-  //   // Todo 完成后逻辑
-  //   alert("success!");
-  // }
-
-  alert("success!");
+  if (resp["status"] !== 0 && resp["msg"] !== "ok"){
+    var error_msg = API_REGISTER_RETURN_STATUS_MSG[resp["status"].toString()];
+    alert(error_msg);
+  } else {
+    // Todo 完成后逻辑 TODO!!!!
+    alert("success!");
+  }
 }
 
 // 请求注册接口
 function requestRegisterApi(callback){
 
-  // 创建提交用的公/私钥对
-  generateSubmitKeyPairs();
+  var password = _current_password_lang === "zh" ?  _password["zh"] :  _password["en"];
+  var account_name = _submit_data["account_name"];
 
-  // Todo: 请求注册接口
-  // $.post("http://faucet.ofree.vip/v1/chain/vv_register",_submit_data,function(resp){
-  //   callback(resp);
-  // })
+  //  创建提交用的公/私钥对
+  generateSubmitKeyPairs(account_name, password);
 
-  callback()
+  //  请求注册接口 TODO:error
+  $.post("https://f.weaccount.cn/v1/chain/register_ff",_submit_data,function(resp){
+    callback(resp);
+  })
 }
 
 // 立即注册提交
@@ -645,18 +644,18 @@ function bitsharesQueryAccount(account, callback){
   }
 }
 
-// 创建公/私钥
-function createKeyPair(){
-  return "xxxxxxxxxxxx";
+//  根据账号密码生成对应的公钥
+function genPublicKeyFromPassword(account_name, password, permission_role)
+{
+  //  TODO:前缀 目前仅支持BTS
+  return window.bitshares_js.PrivateKey.fromSeed(account_name + permission_role + password).toPublicKey().toString("BTS");
 }
 
 // 创建注册用的公/私钥对
-function generateSubmitKeyPairs(){
-
-   // Todo 创建逻辑未完成
-  _submit_data["owner_key"] = createKeyPair();
-  _submit_data["active_key"] = createKeyPair();
-  _submit_data["memo_key"] = createKeyPair();
+function generateSubmitKeyPairs(account_name, password){
+  _submit_data["owner_key"] = genPublicKeyFromPassword(account_name, password, 'owner');
+  _submit_data["active_key"] = genPublicKeyFromPassword(account_name, password, 'active');
+  _submit_data["memo_key"] = genPublicKeyFromPassword(account_name, password, 'active');
 }
 
 // 生成中文密码
