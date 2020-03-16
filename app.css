@@ -50,7 +50,7 @@ input#input-account{
 #footer { margin-bottom: 48px; }
 .footer-text { font-size: 14px; }
 #bottom-footer {position: fixed; bottom: 0; left: 0; width: 100%; height: 64px; background-color: #14223a;}
-#agreement-wrap {margin: 0 auto; ;margin-top: 3em; width: 142px; }
+#agreement-wrap {margin: 0 auto; ;margin-top: 3em; width: 152px; }
 #argeement-checkbox-tip-agreement-link {font-weight: 700;}
 #qrcode { width: 48px; height: 48px; text-align: center; right: 10%; top: 8px;}
 
@@ -72,3 +72,5 @@ input#input-account{
 #top-block-view-content { position: fixed; z-index: 18001; top: 50%; width: 100%; height: 80px; text-align: center; }
 #top-block-view-tips { color: white; font-size: 16px; }
 #top-block-view-loading img { width: 32px; height: 32px; }
+
+#lang-cn, #lang-en {font-size: 16px;}

@@ -265,6 +265,9 @@ function renderStyle(){
 
   var link_agreement = document.getElementById("argeement-checkbox-tip-agreement-link");
 
+  document.getElementById("lang-cn").style.color = "#5c7ed2";
+  document.getElementById("lang-en").style.color = "#5c7ed2";
+
   if (isLangZh()) {
     renderPassword(_password["zh"]);
 
@@ -280,14 +283,17 @@ function renderStyle(){
     link_agreement.href = "https://btspp.io/en/agreement.html";
   }
 
-  // 中英文
+  // 中英文切换默认隐藏一个
   if (_current_password_lang === "zh"){
-    document.getElementById("lang-cn").style.color = "white";
-    document.getElementById("lang-en").style.color = "#5c7ed2";
+    document.getElementById("lang-cn").style.display = "none";
   } else {
-    document.getElementById("lang-cn").style.color = "#5c7ed2";
-    document.getElementById("lang-en").style.color = "white";
+    document.getElementById("lang-en").style.display = "none";
   }
+
+  // } else {
+  //   document.getElementById("lang-cn").style.color = "#5c7ed2";
+  //   document.getElementById("lang-en").style.color = "white";
+  // }
 }
 
 function bindEvents(){
@@ -537,8 +543,8 @@ function onLangZhClickButton(){
   if (_current_password_lang === "zh") return;
   _current_password_lang = "zh";
   generatePassword();
-  document.getElementById("lang-cn").style.color = "white";
-  document.getElementById("lang-en").style.color = "#5c7ed2";
+  document.getElementById("lang-cn").style.display = "none";
+  document.getElementById("lang-en").style.display = "block";
   renderPassword(_password["zh"]);
 }
 
@@ -547,8 +553,8 @@ function onLangEnClickButton(){
   if (_current_password_lang === "en") return;
   _current_password_lang = "en";
   generatePassword();
-  document.getElementById("lang-cn").style.color = "#5c7ed2";
-  document.getElementById("lang-en").style.color = "white";
+  document.getElementById("lang-cn").style.display = "block";
+  document.getElementById("lang-en").style.display = "none";
   renderPassword(_password["en"]);
 }
 
