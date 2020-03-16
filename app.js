@@ -19,7 +19,7 @@ function randomGenerateChineseWord_N16()
   var words_list_count = words_list.length;
 
   var brainkey = [];
-  var end = word_count * 2;
+  var end = 32;
   var base = 65536.0; //  Math.pow(2, 16);
   for (var i = 0; i < end; i += 2) {
       // randomBuffer has 256 bits / 16 bits per word == 16 words
