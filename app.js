@@ -76,22 +76,23 @@ var _submit_data = {
 }
 
 // 注册接口返回STATUS枚举 TODO 多语言
-API_REGISTER_RETURN_STATUS_MSG = {
-  "0": "正常",
-  "10": "无效参数",
-  "20": "高级名称不支持",
-  "30": "账号已经存在",
-  "40": "区块链上注册失败（错误信息查看日志）",
-  "41": "单IP达到最大注册数量",
-  "42": "单IP冷却时间未到（注册太过频繁）",
-  "51": "商家主不存在",
-  "52": "商家备不存在",
-  "999": "服务器维护中"
-}
+// API_REGISTER_RETURN_STATUS_MSG = {
+//   "0": "正常",
+//   "10": "无效参数",
+//   "20": "高级名称不支持",
+//   "30": "账号已经存在",
+//   "40": "区块链上注册失败（错误信息查看日志）",
+//   "41": "单IP达到最大注册数量",
+//   "42": "单IP冷却时间未到（注册太过频繁）",
+//   "51": "商家主不存在",
+//   "52": "商家备不存在",
+//   "999": "服务器维护中"
+// }
 
 
 var I18n = {
   "zh": {
+    "account": "账号",
     "title": "欢迎来到比特股去中心化交易平台",
     "tip_input_account": "请输入账号",
     "tip_argeement": "我同意，",
@@ -113,9 +114,29 @@ var I18n = {
     "next_step": "下一步",
     "back_button": "回上一页",
 
-    "request": "请求中..."
+    "exist": "已经存在",
+    "request": "请求中...",
+    "networking_error": "网络异常,请稍后再试",
+
+    "congratulation": "恭喜您注册成功!",
+    "your-account": "您的账号",
+    "login-link": "下载登录",
+
+    "API_REGISTER_RETURN_STATUS_MSG": {
+      "0": "正常",
+      "10": "无效参数",
+      "20": "高级名称不支持",
+      "30": "账号已经存在",
+      "40": "区块链上注册失败（错误信息查看日志）",
+      "41": "单IP达到最大注册数量",
+      "42": "单IP冷却时间未到（注册太过频繁）",
+      "51": "商家主不存在",
+      "52": "商家备不存在",
+      "999": "服务器维护中",
+    }
   },
   "en": {
+    "account": "Account",
     "title": "Welcome to BitShares",
     "tip_input_account": "Please enter an account",
     "tip_argeement": "I agree, ",
@@ -125,7 +146,7 @@ var I18n = {
     "start_with_char": "Start with letter",  
     "length3to32": "Length 3-12 bits",
     "include_digit": "Contain number",
-    "digit_char_tail": "End with number or letter",
+    "digit_char_tail": "End with num or letter",
 
     "register_immediately": "Register",
     "exist_account": "Have an account?",
@@ -137,7 +158,27 @@ var I18n = {
     "next_step": "Next",
     "back_button": "Back",
 
-    "request": "Requesting..."
+    "exist": "exist.",
+    "request": "Requesting...",
+    "networking_error": "Networking Exception \nPlease try later again.",
+
+    "congratulation": "Congratulation! Register Success!",
+    "your-account": "Your account",
+    "login-link": "Download & Login",
+
+    "API_REGISTER_RETURN_STATUS_MSG": {
+      "0": "正常",
+      "10": "无效参数",
+      "20": "高级名称不支持",
+      "30": "账号已经存在",
+      "40": "区块链上注册失败（错误信息查看日志）",
+      "41": "单IP达到最大注册数量",
+      "42": "单IP冷却时间未到（注册太过频繁）",
+      "51": "商家主不存在",
+      "52": "商家备不存在",
+      "999": "服务器维护中"
+    }
+
   }
 }
 
@@ -213,6 +254,9 @@ function tranlate(){
 
   document.getElementById("top-block-view-tips").innerText = i18n["request"];
 
+  document.getElementById("congratulation").innerText = i18n["congratulation"];
+  document.getElementById("login-link").innerText = i18n["login-link"];
+
 }
 
 // 渲染界面 - 密码
@@ -258,6 +302,8 @@ function renderStyle(){
 
   // 显示第一步的界面
   document.getElementById("register-step1").style.display = "block";
+  // showSuccessContent();
+
 
   // 无效化下一步和提交按钮样式
   disableNextButtonStyle();
@@ -426,8 +472,8 @@ function onNextClickButton(){
     hideBlockView();
     console.log(res)
     if (res){
-      //  TODO: 多语言 账号 xxx 已经存在。
-      alert("Account: "+ account_name + " exist.");
+      var i18n = I18n[_current_lang];
+      alert(i18n["account"] + ": "+ account_name + i18n["exist"]);
       return;
     }
 
@@ -559,6 +605,19 @@ function onLangEnClickButton(){
   renderPassword(_password["en"]);
 }
 
+// 显示注册成功界面
+function showSuccessContent(){
+    var i18n = I18n[_current_lang];
+    document.getElementById("qrcode").style.display = "none";
+    document.getElementById("footer").style.display = "none";
+    document.getElementById("bottom-footer").style.display = "block";
+    document.getElementById("your-account").innerText = i18n["your-account"] + ": " + _submit_data["account_name"];
+    var div_step2 = document.getElementById("register-step2")
+    var div_step3 = document.getElementById("register-step3")
+    div_step2.style.display = "none";
+    div_step3.style.display = "block";
+}
+
 // 注册接口完成
 function onRequestRegisterApiFinished(resp){
   // 隐藏遮罩
@@ -567,12 +626,19 @@ function onRequestRegisterApiFinished(resp){
   console.log(resp);
 
   if (resp["status"] !== 0 && resp["msg"] !== "ok"){
-    var error_msg = API_REGISTER_RETURN_STATUS_MSG[resp["status"].toString()];
+    var i18n = I18n[_current_lang];
+    var error_msg = i18n["API_REGISTER_RETURN_STATUS_MSG"][resp["status"].toString()];
     alert(error_msg);
   } else {
-    // Todo 完成后逻辑 TODO!!!!
-    alert("success!");
+    showSuccessContent();
   }
+}
+
+// 网络异常
+function onRequestNetworkingError(code){
+  hideBlockView();
+  var i18n = I18n[_current_lang];
+  alert(i18n["networking_error"] + "\nCode: " + code);
 }
 
 // 请求注册接口
@@ -584,9 +650,22 @@ function requestRegisterApi(callback){
   //  创建提交用的公/私钥对
   generateSubmitKeyPairs(account_name, password);
 
-  //  请求注册接口 TODO:error
-  $.post("https://f.weaccount.cn/v1/chain/register_ff",_submit_data,function(resp){
-    callback(resp);
+  //  请求注册接口
+  $.ajax("https://f.weaccount.cn/v1/chain/register_ff", {
+    type: "post",
+    data: _submit_data,
+    crossDomain: true,
+    dataType: 'json',
+    timeout: 30000,
+    success: function(data, code, xhr) {
+      callback(data);
+    },
+    complete: function(xhr, code) {
+
+    },
+    error: function(xhr, code) {
+      onRequestNetworkingError(code);
+    }
   })
 }
 
