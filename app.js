@@ -611,11 +611,11 @@ function onRequestNetworkingError(code){
 // 请求注册接口
 function requestRegisterApi(callback){
 
-  var password = _current_password_lang === "zh" ?  _password["zh"] :  _password["en"];
+  var password_ary = _current_password_lang === "zh" ?  _password["zh"] :  _password["en"];
   var account_name = _submit_data["account_name"];
 
   //  创建提交用的公/私钥对
-  generateSubmitKeyPairs(account_name, password);
+  generateSubmitKeyPairs(account_name, password_ary.join(""));
 
   //  请求注册接口
   $.ajax("https://f.weaccount.cn/v1/chain/register", {
@@ -708,7 +708,7 @@ function genPublicKeyFromPassword(account_name, password, permission_role)
 function generateSubmitKeyPairs(account_name, password){
   _submit_data["owner_key"] = genPublicKeyFromPassword(account_name, password, 'owner');
   _submit_data["active_key"] = genPublicKeyFromPassword(account_name, password, 'active');
-  _submit_data["memo_key"] = genPublicKeyFromPassword(account_name, password, 'active');
+  _submit_data["memo_key"] = genPublicKeyFromPassword(account_name, password, 'memo');
 }
 
 // 生成中文密码
