@@ -654,10 +654,10 @@ function onSubmitButton(){
   // 查找推荐人id
   if (_referrer){
     bitsharesQueryAccount(_referrer,function(res){
-
+      
       // 查找到推荐人 则放到提交数据中
-      if (res.id){
-        _submit_data["referrer_code"] = res.id;
+      if (res && res.id){
+        _submit_data["referrer_code"] = btoa(res.id.split(".")[2]);
       }
 
       // 提交请求逻辑
@@ -689,10 +689,7 @@ function bitsharesQueryAccount(account, callback){
     window.apis.instance(WS_API, true, 8000).init_promise.then(function(res){
       bitsharesExecApi("get_account_by_name",[account],callback);
     }).catch(function(err){
-      hideBlockView();
-      // alert("[Connect api node failed] \n code: " + err.code + ",\n message: " + err.data.message);
-      var i18n = I18n[_current_lang];
-      alert(i18n["networking_error"]);
+      callback(null);
     })
   }
 }
