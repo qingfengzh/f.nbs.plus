@@ -144,7 +144,7 @@ var I18n = {
     "tip_argeement": "I agree to the ",
     "tip_argeement_link": "User Service Agreement",
 
-    "include_en_digit_char": "Composed of english letter, number, or \"-\"",
+    "include_en_digit_char": "Composed of letter, number, or \"-\"",
     "start_with_char": "Start with letter",  
     "length3to32": "Length 3-12 bits",
     "include_digit": "Contain number",
