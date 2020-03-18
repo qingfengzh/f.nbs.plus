@@ -91,12 +91,12 @@ var I18n = {
     "digit_char_tail": "以数字或字母结尾",
 
     "register_immediately": "立即注册",
-    "exist_account": "已有账号",
+    "exist_account": "已有账号 ",
     "download_immediately": "立即下载",
     "website": "官网：",
     "referrer": "推荐人",
     "tip_save_pwd": "请妥善保管以下密码",
-    "important_tip": "重要提示：请勿<span class='highlight'>复制</span>/<span class='highlight'>拍照</span>/<span class='highlight'>截屏</span>，使用纸笔按顺序抄录保存，请妥善保管您的密码信息，丢失后<span class='highlight'>无法找回</span>。",
+    "important_tip": "重要提示：请勿<span class='highlight'>复制</span>/<span class='highlight'>拍照</span>/<span class='highlight'>截屏</span>，使用纸笔按顺序抄录并保存到安全的地方，丢失后<span class='highlight'>无法找回</span>。",
     "next_step": "下一步",
     "back_button": "回上一页",
 
@@ -137,7 +137,7 @@ var I18n = {
     "digit_char_tail": "End with num or letter",
 
     "register_immediately": "Register",
-    "exist_account": "Have an account?",
+    "exist_account": "Have an account? ",
     "download_immediately": "Log in here",
     "website": "Website: ",
     "referrer": "Referrer",
@@ -686,7 +686,7 @@ function bitsharesExecApi(api_name,params, callback){
 function bitsharesQueryAccount(account, callback){
   if(typeof(window.bitshares_js) === "object"){
     window.apis = window.bitshares_js.bitshares_ws.Apis
-    window.apis.instance(WS_API, true).init_promise.then(function(res){
+    window.apis.instance(WS_API, true, 8000).init_promise.then(function(res){
       bitsharesExecApi("get_account_by_name",[account],callback);
     }).catch(function(err){
       hideBlockView();
