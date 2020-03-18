@@ -95,8 +95,8 @@ var I18n = {
     "account": "账号",
     "title": "欢迎来到比特股去中心化交易平台",
     "tip_input_account": "请输入账号",
-    "tip_argeement": "我同意，",
-    "tip_argeement_link": "服务协议",
+    "tip_argeement": "我同意",
+    "tip_argeement_link": "《用户服务协议》",
 
     "include_en_digit_char": "由英文字母、数字或短横线 \"-\" 组成",
     "start_with_char": "必须字母开头",  
@@ -114,33 +114,33 @@ var I18n = {
     "next_step": "下一步",
     "back_button": "回上一页",
 
-    "exist": "已经存在",
-    "request": "请求中...",
-    "networking_error": "网络异常,请稍后再试",
+    "exist": "已经存在。",
+    "request": "请求中…",
+    "networking_error": "网络异常，请稍后再试。",
 
-    "congratulation": "恭喜您注册成功!",
+    "congratulation": "恭喜您注册成功！",
     "your-account": "您的账号",
     "login-link": "下载登录",
 
     "API_REGISTER_RETURN_STATUS_MSG": {
       "0": "正常",
-      "10": "无效参数",
-      "20": "高级名称不支持",
-      "30": "账号已经存在",
-      "40": "区块链上注册失败（错误信息查看日志）",
-      "41": "单IP达到最大注册数量",
-      "42": "单IP冷却时间未到（注册太过频繁）",
-      "51": "商家主不存在",
-      "52": "商家备不存在",
-      "999": "服务器维护中",
+      "10": "参数无效。",
+      "20": "账号格式无效。",
+      "30": "账号已经存在。",
+      "40": "未知错误，广播失败。",
+      "41": "该设备注册账号数量过多。",
+      "42": "注册太频繁，请稍后再试。",
+      "51": "主账号不存在。",
+      "52": "备账号不存在。",
+      "999": "服务器维护中。",
     }
   },
   "en": {
     "account": "Account",
     "title": "Welcome to BitShares",
     "tip_input_account": "Please enter an account",
-    "tip_argeement": "I agree, ",
-    "tip_argeement_link": "the service agreement",
+    "tip_argeement": "I agree to the ",
+    "tip_argeement_link": "User Service Agreement",
 
     "include_en_digit_char": "Composed of english letter, number, or \"-\"",
     "start_with_char": "Start with letter",  
@@ -158,51 +158,28 @@ var I18n = {
     "next_step": "Next",
     "back_button": "Back",
 
-    "exist": "exist.",
-    "request": "Requesting...",
-    "networking_error": "Networking Exception \nPlease try later again.",
+    "exist": "already exists.",
+    "request": "Requesting…",
+    "networking_error": "Network error. Please try again later.",
 
     "congratulation": "Congratulation! Register Success!",
     "your-account": "Your account",
     "login-link": "Download & Login",
 
     "API_REGISTER_RETURN_STATUS_MSG": {
-      "0": "正常",
-      "10": "无效参数",
-      "20": "高级名称不支持",
-      "30": "账号已经存在",
-      "40": "区块链上注册失败（错误信息查看日志）",
-      "41": "单IP达到最大注册数量",
-      "42": "单IP冷却时间未到（注册太过频繁）",
-      "51": "商家主不存在",
-      "52": "商家备不存在",
-      "999": "服务器维护中"
+      "0": "ok",
+      "10": "Invalid argument.",
+      "20": "The account format is incorrect.",
+      "30": "The account already exists.",
+      "40": "Unknown error, broadcast failed.",
+      "41": "The device has too many registered accounts.",
+      "42": "Registration is too often, please try again later.",
+      "51": "Master account does not exist.",
+      "52": "Secondary account does not exist.",
+      "999": "Server maintenance."
     }
 
   }
-}
-
-String.prototype.format = function(args) {
-   var result = this;
-   if (arguments.length > 0) {
-       if (arguments.length == 1 && typeof (args) == "object") {
-           for (var key in args) {
-               if(args[key]!=undefined){
-                   var reg = new RegExp("({" + key + "})", "g");
-                   result = result.replace(reg, args[key]);
-               }
-           }
-       }
-       else {
-           for (var i = 0; i < arguments.length; i++) {
-               if (arguments[i] != undefined) {
-                   var reg= new RegExp("({)" + i + "(})", "g");
-                   result = result.replace(reg, arguments[i]);
-               }
-           }
-       }
-   }
-   return result;
 }
 
 function getUrlParam(name) {
@@ -473,7 +450,7 @@ function onNextClickButton(){
     console.log(res)
     if (res){
       var i18n = I18n[_current_lang];
-      alert(i18n["account"] + ": "+ account_name + i18n["exist"]);
+      alert(i18n["account"] + " " + account_name + " " + i18n["exist"]);
       return;
     }
 
@@ -611,7 +588,7 @@ function showSuccessContent(){
     document.getElementById("qrcode").style.display = "none";
     document.getElementById("footer").style.display = "none";
     document.getElementById("bottom-footer").style.display = "block";
-    document.getElementById("your-account").innerText = i18n["your-account"] + ": " + _submit_data["account_name"];
+    document.getElementById("your-account").innerText = i18n["your-account"] + " " + _submit_data["account_name"];
     var div_step2 = document.getElementById("register-step2")
     var div_step3 = document.getElementById("register-step3")
     div_step2.style.display = "none";
@@ -638,7 +615,7 @@ function onRequestRegisterApiFinished(resp){
 function onRequestNetworkingError(code){
   hideBlockView();
   var i18n = I18n[_current_lang];
-  alert(i18n["networking_error"] + "\nCode: " + code);
+  alert(i18n["networking_error"]);
 }
 
 // 请求注册接口
@@ -661,7 +638,6 @@ function requestRegisterApi(callback){
       callback(data);
     },
     complete: function(xhr, code) {
-
     },
     error: function(xhr, code) {
       onRequestNetworkingError(code);
@@ -703,7 +679,9 @@ function bitsharesExecApi(api_name,params, callback){
     callback(res);
   }).catch(function(err){
     console.log(err)
-    alert("[Request exception] \n code: " + err.code + ",\n message: " + err.data.message);
+    // alert("[Request exception] \n code: " + err.code + ",\n message: " + err.data.message);
+    var i18n = I18n[_current_lang];
+    alert(i18n["networking_error"]);
   })
 }
 
@@ -715,7 +693,9 @@ function bitsharesQueryAccount(account, callback){
       window.apis.instance(WS_API, true).init_promise.then(function(res){
         bitsharesExecApi("get_account_by_name",[account],callback);
       }).catch(function(err){
-        alert("[Connect api node failed] \n code: " + err.code + ",\n message: " + err.data.message);
+        // alert("[Connect api node failed] \n code: " + err.code + ",\n message: " + err.data.message);
+        var i18n = I18n[_current_lang];
+        alert(i18n["networking_error"]);
       })
     } else {
       bitsharesExecApi("get_account_by_name",[account],callback);

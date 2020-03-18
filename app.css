@@ -31,8 +31,8 @@ body {background-color: #151e31;}
 #logo-text { display: inline-block; margin-top: 50px; font-size: 4em;font-weight: 900;}
 .full-center { width: 100%; text-align: center;  }
 #title {font-size: 2.6em; margin-top: 30px; font-weight: 900;}
-.main-body { margin-top: 8em; }
-#wrap-input-account {margin-bottom: 6em;}
+.main-body { margin-top: 6em; }
+#wrap-input-account {margin-bottom: 2.6em;}
 #tip-input-account {font-size: 14px; color: white;}
 input#input-account{
 	display: block; width: 100%; margin-top: 1em; font-size: 3em; color: white; background: none; 
