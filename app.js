@@ -289,8 +289,6 @@ function renderStyle(){
 
   } else {
     renderPassword(_password["en"]);
-    // 以下是英文界面的样式修复
-    document.getElementById("agreement-wrap").style.width = "290px";  // 同意tip文字在英文下样式超宽
 
     // 用户协议英文版
     link_agreement.href = "https://btspp.io/en/agreement.html";
@@ -302,11 +300,6 @@ function renderStyle(){
   } else {
     document.getElementById("lang-en").style.display = "none";
   }
-
-  // } else {
-  //   document.getElementById("lang-cn").style.color = "#5c7ed2";
-  //   document.getElementById("lang-en").style.color = "white";
-  // }
 }
 
 function bindEvents(){
