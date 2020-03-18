@@ -122,6 +122,8 @@ var I18n = {
     "your-account": "您的账号",
     "login-link": "下载登录",
 
+    "tip-register-confirmation": "请确认您的密码已经抄录完毕，并保存到了安全的地方，丢失将无法找回",
+
     "API_REGISTER_RETURN_STATUS_MSG": {
       "0": "正常",
       "10": "参数无效。",
@@ -165,6 +167,8 @@ var I18n = {
     "congratulation": "Congratulation! Register Success!",
     "your-account": "Your account",
     "login-link": "Download & Login",
+
+    "tip-register-confirmation": "请确认您的密码已经抄录完毕，并保存到了安全的地方，丢失将无法找回",
 
     "API_REGISTER_RETURN_STATUS_MSG": {
       "0": "ok",
@@ -300,7 +304,7 @@ function renderStyle(){
   } else {
     renderPassword(_password["en"]);
     // 以下是英文界面的样式修复
-    document.getElementById("agreement-wrap").style.width = "240px";  // 同意tip文字在英文下样式超宽
+    document.getElementById("agreement-wrap").style.width = "290px";  // 同意tip文字在英文下样式超宽
 
     // 用户协议英文版
     link_agreement.href = "https://btspp.io/en/agreement.html";
@@ -649,6 +653,12 @@ function requestRegisterApi(callback){
 function onSubmitButton(){
   var check_agree = document.getElementById("agreement-checkbox");
   if (!check_agree.checked){
+    return;
+  }
+
+  // 二次确认注册
+  var i18n = I18n[_current_lang];
+  if(!window.confirm(i18n["tip-register-confirmation"])){
     return;
   }
 
