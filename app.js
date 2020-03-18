@@ -96,7 +96,7 @@ var I18n = {
     "website": "官网：",
     "referrer": "推荐人",
     "tip_save_pwd": "请妥善保管以下密码",
-    "important_tip": "重要提示：请勿<span class='highlight'>复制</span>/<span class='highlight'>拍照</span>/<span class='highlight'>截屏</span>，使用纸笔按顺序抄录保存，请妥善保管您的密码信息，丢失<span class='highlight'>无法找回</span>。",
+    "important_tip": "重要提示：请勿<span class='highlight'>复制</span>/<span class='highlight'>拍照</span>/<span class='highlight'>截屏</span>，使用纸笔按顺序抄录保存，请妥善保管您的密码信息，丢失后<span class='highlight'>无法找回</span>。",
     "next_step": "下一步",
     "back_button": "回上一页",
 
@@ -127,8 +127,8 @@ var I18n = {
     "account": "Account",
     "title": "Welcome to BitShares",
     "tip_input_account": "Please enter an account",
-    "tip_argeement": "I agree to the ",
-    "tip_argeement_link": "User Service Agreement",
+    "tip_argeement": "I agree with the ",
+    "tip_argeement_link": "User Agreement",
 
     "include_en_digit_char": "Composed of letter, number, or \"-\"",
     "start_with_char": "Start with letter",  
@@ -141,8 +141,8 @@ var I18n = {
     "download_immediately": "Log in here",
     "website": "Website: ",
     "referrer": "Referrer",
-    "tip_save_pwd": "Please keep the following passwords in a safe place.",
-    "important_tip": "Important note：Do not <span class='highlight'>copy</span> / <span class='highlight'>photograph</span> / <span class='highlight'>screenshot</span>, use pen and paper to record in order.",
+    "tip_save_pwd": "Your password",
+    "important_tip": "Important: Don't <span class='highlight'>copy</span> / <span class='highlight'>photograph</span> / <span class='highlight'>screenshot</span>, use paper and pen to record and keep it in a safe place, and <span class='highlight'>you cannot retrieve it</span> if you lose it.",
     "next_step": "Next",
     "back_button": "Back",
 
@@ -150,7 +150,7 @@ var I18n = {
     "request": "Requesting…",
     "networking_error": "Network error. Please try again later.",
 
-    "congratulation": "Congratulation! Register Success!",
+    "congratulation": "Congratulations! Registration is successful.",
     "your-account": "Your account",
     "login-link": "Download & Login",
 
