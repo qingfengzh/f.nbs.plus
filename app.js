@@ -75,20 +75,6 @@ var _submit_data = {
   "referrer_code": null
 }
 
-// 注册接口返回STATUS枚举 TODO 多语言
-// API_REGISTER_RETURN_STATUS_MSG = {
-//   "0": "正常",
-//   "10": "无效参数",
-//   "20": "高级名称不支持",
-//   "30": "账号已经存在",
-//   "40": "区块链上注册失败（错误信息查看日志）",
-//   "41": "单IP达到最大注册数量",
-//   "42": "单IP冷却时间未到（注册太过频繁）",
-//   "51": "商家主不存在",
-//   "52": "商家备不存在",
-//   "999": "服务器维护中"
-// }
-
 
 var I18n = {
   "zh": {
@@ -122,7 +108,7 @@ var I18n = {
     "your-account": "您的账号",
     "login-link": "下载登录",
 
-    "tip-register-confirmation": "请确认您的密码已经抄录完毕，并保存到了安全的地方，丢失将无法找回",
+    "tip-register-confirmation": "请确认您的密码已经抄录完毕，并保存到了安全的地方，丢失将无法找回。",
 
     "API_REGISTER_RETURN_STATUS_MSG": {
       "0": "正常",
@@ -168,7 +154,7 @@ var I18n = {
     "your-account": "Your account",
     "login-link": "Download & Login",
 
-    "tip-register-confirmation": "请确认您的密码已经抄录完毕，并保存到了安全的地方，丢失将无法找回",
+    "tip-register-confirmation": "Please make sure that your password has been copied and saved to a safe place. If it is lost, it cannot be retrieved.",
 
     "API_REGISTER_RETURN_STATUS_MSG": {
       "0": "ok",
@@ -632,7 +618,7 @@ function requestRegisterApi(callback){
   generateSubmitKeyPairs(account_name, password);
 
   //  请求注册接口
-  $.ajax("https://f.weaccount.cn/v1/chain/register_ff", {
+  $.ajax("https://f.weaccount.cn/v1/chain/register", {
     type: "post",
     data: _submit_data,
     crossDomain: true,
@@ -688,6 +674,7 @@ function bitsharesExecApi(api_name,params, callback){
   window.apis.instance().db_api().exec(api_name,params).then(function(res){
     callback(res);
   }).catch(function(err){
+    hideBlockView();
     console.log(err)
     // alert("[Request exception] \n code: " + err.code + ",\n message: " + err.data.message);
     var i18n = I18n[_current_lang];
@@ -698,18 +685,15 @@ function bitsharesExecApi(api_name,params, callback){
 // 查询账号
 function bitsharesQueryAccount(account, callback){
   if(typeof(window.bitshares_js) === "object"){
-    if (!window.apis){
-      window.apis = window.bitshares_js.bitshares_ws.Apis
-      window.apis.instance(WS_API, true).init_promise.then(function(res){
-        bitsharesExecApi("get_account_by_name",[account],callback);
-      }).catch(function(err){
-        // alert("[Connect api node failed] \n code: " + err.code + ",\n message: " + err.data.message);
-        var i18n = I18n[_current_lang];
-        alert(i18n["networking_error"]);
-      })
-    } else {
+    window.apis = window.bitshares_js.bitshares_ws.Apis
+    window.apis.instance(WS_API, true).init_promise.then(function(res){
       bitsharesExecApi("get_account_by_name",[account],callback);
-    }
+    }).catch(function(err){
+      hideBlockView();
+      // alert("[Connect api node failed] \n code: " + err.code + ",\n message: " + err.data.message);
+      var i18n = I18n[_current_lang];
+      alert(i18n["networking_error"]);
+    })
   }
 }
 
