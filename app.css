@@ -46,7 +46,7 @@ input#input-account{
 #submit-button, #next-button, #back-button, #login-link {
  background-color: #5c7ed2; border: none; color: white; width: 120px; height: 36px; font-size: 2em; 
 }
-#login-link { padding: 8px 12px; }
+#login-link { display: inline-block; line-height: 36px; }
 
 .white {color: white; }
 #footer { margin-bottom: 48px; }
