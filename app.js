@@ -132,7 +132,7 @@ var I18n = {
 
     "include_en_digit_char": "Composed of letter, number, or \"-\"",
     "start_with_char": "Start with letter",  
-    "length3to32": "Length 3-12 bits",
+    "length3to32": "Length 3-12 chars",
     "include_digit": "Contain number",
     "digit_char_tail": "End with num or letter",
 
