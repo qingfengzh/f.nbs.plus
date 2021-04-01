@@ -110,6 +110,7 @@ var I18n = {
     "congratulation": "恭喜您注册成功！",
     "your-account": "您的账号",
     "login-link": "下载登录",
+    "wechat-tip": "（推荐使用系统浏览器打开）",
 
     "tip-register-confirmation": "请确认您的密码已经抄录完毕，并保存到了安全的地方，丢失将无法找回。",
 
@@ -156,6 +157,7 @@ var I18n = {
     "congratulation": "Congratulations! Registration is successful.",
     "your-account": "Your account",
     "login-link": "Download & Login",
+    "wechat-tip": "(It is recommended to use the system browser to open)",
 
     "tip-register-confirmation": "Please make sure that your password has been copied and saved to a safe place. If it is lost, it cannot be retrieved.",
 
@@ -302,6 +304,11 @@ function renderStyle(){
     document.getElementById("lang-cn").style.display = "none";
   } else {
     document.getElementById("lang-en").style.display = "none";
+  }
+
+  // 判断微信浏览器
+  if(/MicroMessenger/i.test(navigator.userAgent)){
+    document.getElementById("wechat-tip").innerText = I18n[_current_lang]["wechat-tip"]
   }
 }
 
@@ -608,6 +615,8 @@ function requestRegisterApi(callback){
 
   var password_ary = _current_password_lang === "zh" ?  _password["zh"] :  _password["en"];
   var account_name = _submit_data["name"];
+
+
 
   //  创建提交用的公/私钥对
   generateSubmitKeyPairs(account_name, password_ary.join(""));
